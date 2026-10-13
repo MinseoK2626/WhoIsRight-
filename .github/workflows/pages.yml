@@ -9,9 +9,10 @@ permissions:
   id-token: write
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   build:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +28,7 @@ jobs:
         with:
           path: dist
   deploy:
+    timeout-minutes: 5
     needs: build
     runs-on: ubuntu-latest
     environment:
