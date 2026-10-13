@@ -21,7 +21,7 @@ app.post('/api/verdict',async(req,res)=>{
  // Persist BEFORE calling Gemini. Failed attempts also count. Never automatically retry.
  used++;lastRequest=Date.now();await mkdir(new URL('./.local/',import.meta.url),{recursive:true});const tmp=new URL('./.local/ai-usage.tmp',import.meta.url);await writeFile(tmp,JSON.stringify({day,used}),{mode:0o600});await rename(tmp,quotaPath);
  res.json(await judge(req.body,{key:process.env.GEMINI_API_KEY,model:process.env.GEMINI_MODEL||'gemini-3.8-flash'}));
- }catch(e){res.status(e.status===429?429:502).json({error:e.status===429?'PROVIDER_LIMIT':'AI_UNAVAILABLE'});}finally{inFlight=false;}
+ }catch(e){const code=e.code||'AI_UNAVAILABLE';console.error('Verdict failed:',code,'provider HTTP:',e.providerStatus||'none');res.status(e.status===429?429:e.status===504?504:502).json({error:code});}finally{inFlight=false;}
 });
 app.use((err,req,res,next)=>res.status(err.status===413?413:400).json({error:'INVALID_REQUEST'}));
 if(process.env.NODE_ENV==='production')app.use(express.static('dist'));
