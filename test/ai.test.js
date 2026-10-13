@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {judge,validCase} from '../ai.js';
+const body={context:'Pizza',lang:'en',parties:[{name:'A',statement:'I paid'},{name:'B',statement:'I had less'}]};
+const result={title:'Share',summary:'Both have a point',advice:'Split the slice',responsibilities:[{name:'A',percent:50,reason:'A point'},{name:'B',percent:50,reason:'B point'}]};
+const response=r=>({ok:true,json:async()=>({candidates:[{content:{parts:[{text:JSON.stringify(r)}]}}]})});
+test('validates participants and malformed bodies',()=>{assert.ok(validCase(body));for(const b of [null,{}, {...body,parties:[null,null]}, {...body,lang:'xx'}, {...body,parties:[body.parties[0]]}])assert.ok(!validCase(b));});
+test('Gemini request keeps credentials in headers and testimony as data',async()=>{assert.deepEqual(await judge(body,{key:'test-only',fetchImpl:async(url,options)=>{assert.ok(url.startsWith('https://generativelanguage.googleapis.com/'));assert.ok(!url.includes('test-only'));assert.equal(options.headers['x-goog-api-key'],'test-only');const payload=JSON.parse(options.body);assert.equal(payload.generationConfig.responseMimeType,'application/json');assert.deepEqual(JSON.parse(payload.contents[0].parts[0].text),{context:body.context,parties:body.parties});return response(result);}}),result);});
+test('rejects invented names and invalid totals',async()=>{for(const r of [{...result,responsibilities:[{name:'Other',percent:50,reason:'x'},result.responsibilities[1]]},{...result,responsibilities:result.responsibilities.map(p=>({...p,percent:10}))}])await assert.rejects(judge(body,{key:'test-only',fetchImpl:async()=>response(r)}));});
+test('provider quota stops without automatic retry',async()=>{let count=0;await assert.rejects(judge(body,{key:'test-only',fetchImpl:async()=>{count++;return{ok:false,status:429};}}),e=>e.status===429);assert.equal(count,1);});
