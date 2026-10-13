@@ -51,3 +51,9 @@ Render에 로그인하고 위 링크로 Blueprint를 생성하세요. `render.ya
 무료 서비스의 휴면·재배포·재시작 시 로컬 파일이 사라질 수 있어 하루 요청 횟수가 초기화됩니다. 따라서 앱의 횟수 제한은 요금 방지 장치가 아닙니다. 결제가 연결되지 않은 Gemini 무료 프로젝트만 사용하세요. 안정적인 누적 제한이 필요한 공개 서비스에는 외부 저장소가 필요합니다.
 
 설정 파일을 커밋하는 것만으로 서비스가 생성되지는 않습니다. Render 계정에서 최초 생성 및 GitHub 접근 연결을 완료해야 합니다. 실제 서비스 URL은 Render가 발급하며 이 프로젝트에서 임의로 정하지 않습니다.
+
+## GitHub Pages (데모 화면)
+
+저장소 Settings → Pages → Source에서 **GitHub Actions**를 선택하세요. `.github/workflows/pages.yml`이 `main`의 변경을 빌드하여 배포합니다. 예상 주소는 https://minseok2626.github.io/WhoIsRight-/ 입니다. Actions의 배포 성공 이후 접속하세요.
+
+GitHub Pages는 Node 서버와 비밀 키를 실행하지 않습니다. 이 주소에서는 명시적인 데모 판결만 제공됩니다. 실제 AI 판결은 Render처럼 서버를 지원하는 호스팅의 주소에서 사용하세요. API 키를 GitHub Pages 빌드 변수나 프론트엔드에 넣지 마세요.
