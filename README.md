@@ -57,3 +57,7 @@ Render에 로그인하고 위 링크로 Blueprint를 생성하세요. `render.ya
 저장소 Settings → Pages → Source에서 **GitHub Actions**를 선택하세요. `.github/workflows/pages.yml`이 `main`의 변경을 빌드하여 배포합니다. 예상 주소는 https://minseok2626.github.io/WhoIsRight-/ 입니다. Actions의 배포 성공 이후 접속하세요.
 
 GitHub Pages는 Node 서버와 비밀 키를 실행하지 않습니다. 이 주소에서는 명시적인 데모 판결만 제공됩니다. 실제 AI 판결은 Render처럼 서버를 지원하는 호스팅의 주소에서 사용하세요. API 키를 GitHub Pages 빌드 변수나 프론트엔드에 넣지 마세요.
+
+## 재판 게임 연출
+
+오리지널 SVG 변론 캐릭터·판사, CSS 모션, 이의 있음 팝업과 판결 도장 연출을 제공합니다. 상단 소리 버튼을 켜면 Web Audio로 짧은 효과음을 생성합니다. 소리는 기본 꺼짐이며 클릭 이후에만 재생됩니다. 기기의 동작 줄이기 설정을 존중합니다. 외부 캐릭터 이미지·음원이나 GIF 다운로드가 필요하지 않습니다.
